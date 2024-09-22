@@ -2,42 +2,30 @@ package edu.example.gccoffee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
-@Table(name = "products")
-@Getter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    @Setter(AccessLevel.NONE)
+    private Long id;
 
-    @Column(nullable = false)
-    private String productName;
+    @Column(unique = true, nullable = false)
+    private String name;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private int price;
 
+    @Column(nullable = false)
     private String description;
-
-    public void changeProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void changeCategory(Category category) {this.category = category;}
-
-    public void changePrice(int price) {
-        this.price = price;
-    }
-
-    public void changeDescription(String description) {
-        this.description = description;
-    }
 }

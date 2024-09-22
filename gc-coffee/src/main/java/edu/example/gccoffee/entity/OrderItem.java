@@ -2,36 +2,37 @@ package edu.example.gccoffee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "order_items")
-@Getter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Setter
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderItemId;
+    @Setter(AccessLevel.NONE)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "oid")
+    private Orders orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "pid")
     private Product product;
 
-    private int quantity;
-
+    @Column(nullable = false)
+    @ColumnDefault("0")
     private int price;
 
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private int quantity;
+
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Category category;
-
-    public void changeQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }
